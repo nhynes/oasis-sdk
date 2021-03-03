@@ -499,11 +499,6 @@ export interface Entity extends CBORVersioned {
      * entity signing key.
      */
     nodes?: Uint8Array[];
-    /**
-     * AllowEntitySignedNodes is true iff nodes belonging to this entity
-     * may be signed with the entity signing key.
-     */
-    allow_entity_signed_nodes: boolean;
 }
 
 /**
@@ -1169,11 +1164,6 @@ export interface RegistryConsensusParameters {
      */
     debug_allow_test_runtimes?: boolean;
     /**
-     * DebugAllowEntitySignedNodeRegistration is true iff node registration
-     * signed by entity signing keys should be allowed.
-     */
-    debug_allow_entity_signed_node_registration?: boolean;
-    /**
      * DebugBypassStake is true iff the registry should bypass all of the staking
      * related checks and operations.
      */
@@ -1795,7 +1785,20 @@ export interface RoothashExecutorProposerTimeoutRequest {
  * FinalizedEvent is a finalized event.
  */
 export interface RoothashFinalizedEvent {
+    /**
+     * Round is the round that was finalized.
+     */
     round: longnum;
+    /**
+     * GoodComputeNodes are the public keys of compute nodes that positively contributed to the
+     * round by replicating the computation correctly.
+     */
+    good_compute_nodes?: Uint8Array[];
+    /**
+     * BadComputeNodes are the public keys of compute nodes that negatively contributed to the round
+     * by causing discrepancies.
+     */
+    bad_compute_nodes?: Uint8Array[];
 }
 
 /**
@@ -1924,6 +1927,8 @@ export interface RoothashRegistryMessage extends CBORVersioned {
 export interface RoothashStakingMessage extends CBORVersioned {
     transfer?: StakingTransfer;
     withdraw?: StakingWithdraw;
+    add_escrow?: StakingEscrow;
+    reclaim_escrow?: StakingReclaimEscrow;
 }
 
 /**
@@ -2426,6 +2431,11 @@ export interface StakingConsensusParameters {
     disable_transfers?: boolean;
     disable_delegation?: boolean;
     undisable_transfers_from?: Map<Uint8Array, boolean>;
+    /**
+     * AllowEscrowMessages can be used to allow runtimes to perform AddEscrow
+     * and ReclaimEscrow via runtime messages.
+     */
+    allow_escrow_messages?: boolean;
     /**
      * MaxAllowances is the maximum number of allowances an account can have. Zero means disabled.
      */
