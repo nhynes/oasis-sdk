@@ -1,0 +1,38 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `slog_stdlog` crate."><meta name="keywords" content="rust, rustlang, rust-lang, slog_stdlog"><title>slog_stdlog - Rust</title><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../ayu.css" disabled ><script src="../storage.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="shortcut icon" href="../favicon.ico"><style type="text/css">#crate-search{background-image:url("../down-arrow.svg");}</style></head><body class="rustdoc mod"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../slog_stdlog/index.html'><div class='logo-container rust-logo'><img src='../rust-logo.png' alt='logo'></div></a><p class='location'>Crate slog_stdlog</p><div class='block version'><p>Version 4.1.0</p></div><div class="sidebar-elems"><a id='all-types' href='all.html'><p>See all slog_stdlog's items</p></a><div class="block items"><ul><li><a href="#structs">Structs</a></li><li><a href="#functions">Functions</a></li></ul></div><p class='location'></p><script>window.sidebarCurrent = {name: 'slog_stdlog', ty: 'mod', relpath: '../'};</script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
+                <a id="settings-menu" href="../settings.html"><img src="../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class='fqn'><span class='out-of-band'><span id='render-detail'><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class='inner'>&#x2212;</span>]</a></span><a class='srclink' href='../src/slog_stdlog/lib.rs.html#1-270' title='goto source code'>[src]</a></span><span class='in-band'>Crate <a class="mod" href=''>slog_stdlog</a></span></h1><div class='docblock'><p><code>log</code> crate adapter for slog-rs</p>
+<p>This crate provides two way compatibility with Rust standard <code>log</code> crate.</p>
+<h3 id="log---slog" class="section-header"><a href="#log---slog"><code>log</code> -&gt; <code>slog</code></a></h3>
+<p>After calling <code>init()</code> <code>slog-stdlog</code> will take a role of <code>log</code> crate
+back-end, forwarding all the <code>log</code> logging to <code>slog_scope::logger()</code>.
+In other words, any <code>log</code> crate logging statement will behave like it was <code>slog</code>
+logging statement executed with logger returned by <code>slog_scope::logger()</code>.</p>
+<p>See documentation of <code>slog-scope</code> for more information about logging scopes.</p>
+<p>See <a href="fn.init.html"><code>init</code> documentation</a> for an example.</p>
+<h3 id="slog---log" class="section-header"><a href="#slog---log"><code>slog</code> -&gt; <code>log</code></a></h3>
+<p><code>StdLog</code> is <code>slog::Drain</code> that will pass all <code>Record</code>s passing through it to
+<code>log</code> crate just like they were crated with <code>log</code> crate logging macros in
+the first place.</p>
+<h2 id="slog-scope" class="section-header"><a href="#slog-scope"><code>slog-scope</code></a></h2>
+<p>Since <code>log</code> does not have any form of context, and does not support <code>Logger</code>
+<code>slog-stdlog</code> relies on &quot;logging scopes&quot; to establish it.</p>
+<p>You must set up logging context for <code>log</code> -&gt; <code>slog</code> via <code>slog_scope::scope</code>
+or <code>slog_scope::set_global_logger</code>. Setting a global logger upfront via
+<code>slog_scope::set_global_logger</code> is highly recommended.</p>
+<p>Note: Since <code>slog-stdlog</code> v2, unlike previous releases, <code>slog-stdlog</code> uses
+logging scopes provided by <code>slog-scope</code> crate instead of it's own.</p>
+<p>Refer to <code>slog-scope</code> crate documentation for more information.</p>
+<h3 id="warning" class="section-header"><a href="#warning">Warning</a></h3>
+<p>Be careful when using both methods at the same time, as a loop can be easily
+created: <code>log</code> -&gt; <code>slog</code> -&gt; <code>log</code> -&gt; ...</p>
+<h2 id="compile-time-log-level-filtering" class="section-header"><a href="#compile-time-log-level-filtering">Compile-time log level filtering</a></h2>
+<p>For filtering <code>debug!</code> and other <code>log</code> statements at compile-time, configure
+the features on the <code>log</code> crate in your <code>Cargo.toml</code>:</p>
+<pre><code class="language-norust">log = { version = &quot;*&quot;, features = [&quot;max_level_trace&quot;, &quot;release_max_level_warn&quot;] }
+</code></pre>
+</div><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+<table><tr class='module-item'><td><a class="struct" href="struct.StdLog.html" title='slog_stdlog::StdLog struct'>StdLog</a></td><td class='docblock-short'><p>Drain logging <code>Record</code>s into <code>log</code> crate</p>
+</td></tr></table><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
+<table><tr class='module-item'><td><a class="fn" href="fn.init.html" title='slog_stdlog::init fn'>init</a></td><td class='docblock-short'><p>Register <code>slog-stdlog</code> as <code>log</code> backend.</p>
+</td></tr><tr class='module-item'><td><a class="fn" href="fn.init_with_level.html" title='slog_stdlog::init_with_level fn'>init_with_level</a></td><td class='docblock-short'><p>Register <code>slog-stdlog</code> as <code>log</code> backend.
+Pass a log::Level to do the log filter explicitly.</p>
+</td></tr></table></section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../";window.currentCrate = "slog_stdlog";</script><script src="../main.js"></script><script defer src="../search-index.js"></script></body></html>

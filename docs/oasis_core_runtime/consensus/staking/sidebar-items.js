@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ThresholdKind","Kind of staking threshold."]],"struct":[["Escrow","A stake escrow."],["ReclaimEscrow","A reclaim escrow."],["Transfer","A stake transfer."],["Withdraw","A withdrawal from an account."]]});

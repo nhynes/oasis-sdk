@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Executor","Single-threaded future executor."]]});

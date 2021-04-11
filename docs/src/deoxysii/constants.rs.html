@@ -1,0 +1,156 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/Users/nhynes/.cargo/git/checkouts/deoxysii-rust-f9657329c58fffdd/32d1071/src/constants.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>constants.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../deoxysii/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
+                <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1"> 1</span>
+<span id="2"> 2</span>
+<span id="3"> 3</span>
+<span id="4"> 4</span>
+<span id="5"> 5</span>
+<span id="6"> 6</span>
+<span id="7"> 7</span>
+<span id="8"> 8</span>
+<span id="9"> 9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+</pre><div class="example-wrap"><pre class="rust ">
+<span class="comment">// Copyright (c) 2019 Oasis Labs Inc. &lt;info@oasislabs.com&gt;</span>
+<span class="comment">//</span>
+<span class="comment">// Permission is hereby granted, free of charge, to any person obtaining</span>
+<span class="comment">// a copy of this software and associated documentation files (the</span>
+<span class="comment">// &quot;Software&quot;), to deal in the Software without restriction, including</span>
+<span class="comment">// without limitation the rights to use, copy, modify, merge, publish,</span>
+<span class="comment">// distribute, sublicense, and/or sell copies of the Software, and to</span>
+<span class="comment">// permit persons to whom the Software is furnished to do so, subject to</span>
+<span class="comment">// the following conditions:</span>
+<span class="comment">//</span>
+<span class="comment">// The above copyright notice and this permission notice shall be</span>
+<span class="comment">// included in all copies or substantial portions of the Software.</span>
+<span class="comment">//</span>
+<span class="comment">// THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,</span>
+<span class="comment">// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF</span>
+<span class="comment">// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND</span>
+<span class="comment">// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS</span>
+<span class="comment">// BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN</span>
+<span class="comment">// ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN</span>
+<span class="comment">// CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
+<span class="comment">// SOFTWARE.</span>
+
+<span class="doccomment">/// Size of the Deoxys-II-256-128 key in bytes.</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">KEY_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">32</span>;
+<span class="doccomment">/// Size of the nonce in bytes.</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NONCE_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">15</span>;
+<span class="doccomment">/// Size of the authentication tag in bytes.</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TAG_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">16</span>;
+
+<span class="doccomment">/// Size of the block used in the block cipher in bytes.</span>
+<span class="kw">const</span> <span class="ident">BLOCK_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">16</span>;
+<span class="doccomment">/// Number of rounds used in the block cipher.</span>
+<span class="kw">const</span> <span class="ident">ROUNDS</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">16</span>;
+<span class="doccomment">/// Size of the tweak in bytes.</span>
+<span class="kw">const</span> <span class="ident">TWEAK_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">16</span>;
+<span class="doccomment">/// Size of the sub-tweak key in bytes.</span>
+<span class="kw">const</span> <span class="ident">STK_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">16</span>;
+<span class="doccomment">/// Number of sub-tweak keys.</span>
+<span class="kw">const</span> <span class="ident">STK_COUNT</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">ROUNDS</span> <span class="op">+</span> <span class="number">1</span>;
+
+<span class="doccomment">/// Block prefixes.</span>
+<span class="kw">const</span> <span class="ident">PREFIX_SHIFT</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">4</span>;
+<span class="kw">const</span> <span class="ident">PREFIX_AD_BLOCK</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">0b0010</span>;
+<span class="kw">const</span> <span class="ident">PREFIX_AD_FINAL</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">0b0110</span>;
+<span class="kw">const</span> <span class="ident">PREFIX_MSG_BLOCK</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">0b0000</span>;
+<span class="kw">const</span> <span class="ident">PREFIX_MSG_FINAL</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">0b0100</span>;
+<span class="kw">const</span> <span class="ident">PREFIX_TAG</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">0b0001</span>;
+
+<span class="doccomment">/// Hack that enables us to have __m128i vector constants.</span>
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
+<span class="ident">union</span> <span class="ident">u8x16</span> {
+    <span class="ident">v</span>: <span class="ident">__m128i</span>,
+    <span class="ident">b</span>: [<span class="ident">u8</span>; <span class="number">16</span>],
+}
+
+<span class="doccomment">/// Generates a `__m128i` vector from given `u8` components.</span>
+<span class="doccomment">/// The order of components is lowest to highest.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Note that the order of components is the reverse of `_mm_set_epi8`,</span>
+<span class="doccomment">/// which goes from highest component to lowest!</span>
+<span class="doccomment">/// Also, we use `u8` components, while `_mm_set_epi8` uses `i8` components.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This macro exists only because it&#39;s not possible to use `_mm_set_epi8`</span>
+<span class="doccomment">/// to produce constant vectors.</span>
+<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">m128i_vec</span> {
+    ( $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">x</span>:<span class="ident">expr</span> ),<span class="op">*</span> ) <span class="op">=&gt;</span> { <span class="kw">unsafe</span> { (<span class="ident">u8x16</span> { <span class="ident">b</span>: [$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">x</span>,)<span class="kw-2">*</span>] } ).<span class="ident">v</span> } };
+}
+
+<span class="doccomment">/// Byte shuffle order for the h() function, apply it with `_mm_shuffle_epi8`.</span>
+<span class="kw">const</span> <span class="ident">H_SHUFFLE</span>: <span class="ident">__m128i</span> <span class="op">=</span> <span class="macro">m128i_vec</span><span class="macro">!</span>[<span class="number">1</span>, <span class="number">6</span>, <span class="number">11</span>, <span class="number">12</span>, <span class="number">5</span>, <span class="number">10</span>, <span class="number">15</span>, <span class="number">0</span>, <span class="number">9</span>, <span class="number">14</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">13</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">8</span>];
+
+<span class="doccomment">/// This shuffle order converts the lower half of the vector from little-endian</span>
+<span class="doccomment">/// to big-endian and moves it to the upper half, clearing the lower half to</span>
+<span class="doccomment">/// zero (the 0x80 constants set the corresponding byte to zero).</span>
+<span class="kw">const</span> <span class="ident">LE2BE_SHUFFLE</span>: <span class="ident">__m128i</span> <span class="op">=</span>
+    <span class="macro">m128i_vec</span><span class="macro">!</span>[<span class="number">0x80</span>, <span class="number">0x80</span>, <span class="number">0x80</span>, <span class="number">0x80</span>, <span class="number">0x80</span>, <span class="number">0x80</span>, <span class="number">0x80</span>, <span class="number">0x80</span>, <span class="number">7</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">0</span>];
+</pre></div>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "deoxysii";</script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>

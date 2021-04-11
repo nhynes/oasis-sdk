@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Tree","A Merkle tree containing transaction artifacts."]]});

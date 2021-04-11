@@ -1,0 +1,4 @@
+(function() {var implementors = {};
+implementors["elliptic_curve"] = [{"text":"impl&lt;C&gt; FromPrivateKey for SecretKey&lt;C&gt; <span class=\"where fmt-newline\">where<br>&nbsp;&nbsp;&nbsp;&nbsp;C: Curve + AlgorithmParameters + SecretValue,<br>&nbsp;&nbsp;&nbsp;&nbsp;C::Secret: Clone + Zeroize,<br>&nbsp;&nbsp;&nbsp;&nbsp;FieldBytes&lt;C&gt;: From&lt;C::Secret&gt;,&nbsp;</span>","synthetic":false,"types":[]}];
+implementors["k256"] = [{"text":"impl FromPrivateKey for SigningKey","synthetic":false,"types":[]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

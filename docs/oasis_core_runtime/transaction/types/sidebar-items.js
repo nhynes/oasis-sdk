@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["TxnOutput","Transaction call output."]],"struct":[["TxnBatch","Batch of transaction inputs/outputs."],["TxnCall","Transaction call."],["TxnCheckResult","The result of a successful CheckTx call."]]});

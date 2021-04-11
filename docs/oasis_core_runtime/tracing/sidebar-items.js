@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["add_span_context","Add a tracing span context to the provided `Context`."],["get_span_context","Retrieve a tracing span context from the provided `Context`."]]});

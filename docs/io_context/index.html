@@ -1,0 +1,171 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `io_context` crate."><meta name="keywords" content="rust, rustlang, rust-lang, io_context"><title>io_context - Rust</title><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../ayu.css" disabled ><script src="../storage.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="shortcut icon" href="../favicon.ico"><style type="text/css">#crate-search{background-image:url("../down-arrow.svg");}</style></head><body class="rustdoc mod"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../io_context/index.html'><div class='logo-container rust-logo'><img src='../rust-logo.png' alt='logo'></div></a><p class='location'>Crate io_context</p><div class='block version'><p>Version 0.2.0</p></div><div class="sidebar-elems"><a id='all-types' href='all.html'><p>See all io_context's items</p></a><div class="block items"><ul><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li></ul></div><p class='location'></p><script>window.sidebarCurrent = {name: 'io_context', ty: 'mod', relpath: '../'};</script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
+                <a id="settings-menu" href="../settings.html"><img src="../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class='fqn'><span class='out-of-band'><span id='render-detail'><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class='inner'>&#x2212;</span>]</a></span><a class='srclink' href='../src/io_context/lib.rs.html#8-680' title='goto source code'>[src]</a></span><span class='in-band'>Crate <a class="mod" href=''>io_context</a></span></h1><div class='docblock'><p>This crate defines a <a href="struct.Context.html"><code>Context</code></a>, which carries deadlines, cancelations
+signals and request scoped values across API boundaries.</p>
+<p>Incoming server requests should create a request specific <code>Context</code> from the
+<a href="struct.Context.html#method.background"><code>background context</code></a>. While outgoing requests to servers should accept a
+<code>Context</code> in there methods to allow for cancelation and deadlines. A chain
+of funtions calls for handling a request should propagate the <code>Context</code>,
+optionally adding their own deadlines or cancelation signals. As demostrated
+in the example below.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="comment">// First create our background context. To this context we could add</span>
+    <span class="comment">// signal handling, e.g. when the user pressed ctrl-c.</span>
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ctx</span> <span class="op">=</span> <span class="ident">Context</span>::<span class="ident">background</span>();
+    <span class="comment">// This signal should be canceled once ctrl-c is pressed.</span>
+    <span class="kw">let</span> <span class="ident">cancel_signal</span> <span class="op">=</span> <span class="ident">ctx</span>.<span class="ident">add_cancel_signal</span>();
+    <span class="kw">let</span> <span class="ident">ctx</span> <span class="op">=</span> <span class="ident">ctx</span>.<span class="ident">freeze</span>();
+    <span class="kw">loop</span> {
+        <span class="comment">// Create a context for our request. This will copy any deadlines</span>
+        <span class="comment">// and cancelation signals from the background context into the</span>
+        <span class="comment">// request specific one.</span>
+        <span class="comment">//</span>
+        <span class="comment">// However adding a deadline or cancelation signal to the client</span>
+        <span class="comment">// will not after the background context.</span>
+        <span class="kw">let</span> <span class="ident">request_ctx</span> <span class="op">=</span> <span class="ident">Context</span>::<span class="ident">create_child</span>(<span class="kw-2">&amp;</span><span class="ident">ctx</span>);
+
+        <span class="comment">// Read a request.</span>
+        <span class="kw">let</span> <span class="ident">request</span> <span class="op">=</span> <span class="ident">read_request</span>();
+        <span class="comment">// Pass the request context along with the request to the request</span>
+        <span class="comment">// handler.</span>
+        <span class="kw">let</span> <span class="ident">response</span> <span class="op">=</span> <span class="ident">handle_request</span>(<span class="ident">request_ctx</span>, <span class="ident">request</span>).<span class="ident">unwrap</span>();
+        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;got response: {:?}&quot;</span>, <span class="ident">response</span>);
+    }
+}
+
+<span class="kw">fn</span> <span class="ident">handle_request</span>(<span class="ident">ctx</span>: <span class="ident">Context</span>, <span class="ident">request</span>: <span class="ident">Request</span>) <span class="op">-&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&gt;</span> {
+    <span class="comment">// Check if the context&#39;s deadline was exceeded, or if the context was</span>
+    <span class="comment">// canceled.</span>
+    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">reason</span>) <span class="op">=</span> <span class="ident">ctx</span>.<span class="ident">done</span>() {
+        <span class="comment">// For convience `DoneReason`, returned by `Context.done`, can be</span>
+        <span class="comment">// converted into an `io::Error`.</span>
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">reason</span>.<span class="ident">into</span>());
+    }
+
+    <span class="comment">// Make request to an external server, passing our request context.</span>
+    <span class="ident">make_http_request</span>(<span class="ident">ctx</span>, <span class="string">&quot;https://api.example.com&quot;</span>.<span class="ident">to_owned</span>())
+}
+
+<span class="comment">// An outgoing request should accept a `Context` as first parameter.</span>
+<span class="kw">fn</span> <span class="ident">make_http_request</span>(<span class="ident">ctx</span>: <span class="ident">Context</span>, <span class="ident">url</span>: <span class="ident">String</span>) <span class="op">-&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&gt;</span> {
+    <span class="comment">// Again checking the context is done.</span>
+    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">reason</span>) <span class="op">=</span> <span class="ident">ctx</span>.<span class="ident">done</span>() {
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">reason</span>.<span class="ident">into</span>());
+    }
+    <span class="comment">// Here any deadlines should be added to the HTTP request, using</span>
+    <span class="comment">// `context.deadline` method to retrieve it.</span>
+
+    <span class="comment">// But we&#39;ll fake the response here, for the sake of simplicity.</span>
+    <span class="prelude-val">Ok</span>(<span class="ident">Response</span>)
+}</pre></div>
+<p>Contexts should not stored in structs. Instead functions and methods that
+need a context should accept it as first parameter. For more conventions see
+the <a href="struct.Context.html#conventions"><code>Context convention</code></a> documentation. A possible exception for this is a
+struct that implements a <a href="https://docs.rs/futures/*/futures/future/trait.Future.html"><code>Future</code></a>, which represents the state of that
+future.</p>
+<h1 id="usage" class="section-header"><a href="#usage">Usage</a></h1>
+<p>In the <code>main</code> function of the program a background context should be
+created, which is used in creating all child (request specific) contexts.</p>
+<p>Request deadlines can be added using the <a href="struct.Context.html#method.add_deadline"><code>add_deadline</code></a> and <a href="struct.Context.html#method.add_timeout"><code>add_timeout</code></a>
+methods defined on <a href="struct.Context.html"><code>Context</code></a>. While cancelation signals can be added using
+the <a href="struct.Context.html#method.add_cancel_signal"><code>add_cancel_signal</code></a> method. Request scoped values, e.g. a request id,
+can be added using the <a href="struct.Context.html#method.add_value"><code>add_value</code></a> method. For examples see below and the
+documentation of different linked methods.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="comment">// Create a background context.</span>
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ctx</span> <span class="op">=</span> <span class="ident">Context</span>::<span class="ident">background</span>();
+
+    <span class="comment">// Add cancelation to the context. We can use this to respond to a</span>
+    <span class="comment">// kill signal from the user, e.g. when pressing ctrl-c.</span>
+    <span class="kw">let</span> <span class="ident">cancel_signal</span> <span class="op">=</span> <span class="ident">ctx</span>.<span class="ident">add_cancel_signal</span>();
+
+    <span class="comment">// ... Some time later when we received a kill signal.</span>
+    <span class="ident">cancel_signal</span>.<span class="ident">cancel</span>(); <span class="comment">// Now the context and it&#39;s children will be canceled.</span>
+}</pre></div>
+<h2 id="in-libraries" class="section-header"><a href="#in-libraries">In libraries</a></h2>
+<p>Libraries should accept contexts in their API, the convention is to accept
+it as first parameter in all methods and functions that need it. Do not
+store a context in a struct. For more conventions see the <a href="struct.Context.html#conventions"><code>Context convention</code></a> documentation.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Duration</span>;
+
+<span class="kw">struct</span> <span class="ident">Connection</span> { <span class="comment">/* Some fields. */</span> }
+
+<span class="kw">impl</span> <span class="ident">Connection</span> {
+    <span class="comment">// This executes some long runnning operation.</span>
+    <span class="kw">fn</span> <span class="ident">execute_operation</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ctx</span>: <span class="ident">Context</span>, <span class="ident">input</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+        <span class="comment">// Do step 1 of the work.</span>
+        <span class="ident">work_step_1</span>(<span class="ident">input</span>);
+
+        <span class="comment">// Check if the context is done, e.g. if the deadline has exceeded.</span>
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">reason</span>) <span class="op">=</span> <span class="ident">ctx</span>.<span class="ident">done</span>() {
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">reason</span>.<span class="ident">into</span>());
+        }
+
+        <span class="comment">// Do some more work.</span>
+        <span class="ident">work_step_2</span>();
+
+        <span class="comment">// Check the context again.</span>
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">reason</span>) <span class="op">=</span> <span class="ident">ctx</span>.<span class="ident">done</span>() {
+            <span class="ident">rollback</span>();
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">reason</span>.<span class="ident">into</span>());
+        }
+
+        <span class="comment">// More work, etc.</span>
+        <span class="ident">work_step_3</span>();
+
+        <span class="comment">// Of course we can have even more preciese control if we pass the</span>
+        <span class="comment">// context to our work functions as well, that is omitted in this</span>
+        <span class="comment">// example.</span>
+
+        <span class="prelude-val">Ok</span>(())
+    }
+}
+
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ctx</span> <span class="op">=</span> <span class="ident">Context</span>::<span class="ident">background</span>();
+    <span class="ident">ctx</span>.<span class="ident">add_timeout</span>(<span class="ident">Duration</span>::<span class="ident">from_secs</span>(<span class="number">5</span>));
+    <span class="kw">let</span> <span class="ident">ctx</span> <span class="op">=</span> <span class="ident">ctx</span>.<span class="ident">freeze</span>();
+
+    <span class="comment">// We create a new child context just for the specific operation. Any</span>
+    <span class="comment">// deadlines or cancelation signals added to the parent will be added</span>
+    <span class="comment">// to the child context as well. However any deadlines or cancelation</span>
+    <span class="comment">// signals added to the child will not affect the parent.</span>
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">child_ctx</span> <span class="op">=</span> <span class="ident">Context</span>::<span class="ident">create_child</span>(<span class="kw-2">&amp;</span><span class="ident">ctx</span>);
+    <span class="ident">child_ctx</span>.<span class="ident">add_timeout</span>(<span class="ident">Duration</span>::<span class="ident">from_secs</span>(<span class="number">1</span>));
+
+    <span class="comment">// Now we execute the operation, while controlling it&#39;s deadline. We</span>
+    <span class="comment">// could also add a cancelation signal so we could stop it from another</span>
+    <span class="comment">// thread (or future), see `Context.add_cancel_signal`.</span>
+    <span class="kw">let</span> <span class="ident">connection</span> <span class="op">=</span> <span class="ident">Connection</span>{};
+    <span class="ident">connection</span>.<span class="ident">execute_operation</span>(<span class="ident">child_ctx</span>, <span class="string">b&quot;some input&quot;</span>).<span class="ident">unwrap</span>();
+}</pre></div>
+<h2 id="when-should-a-context-be-used" class="section-header"><a href="#when-should-a-context-be-used">When should a Context be used?</a></h2>
+<p>A <code>Context</code> is mainly useful if an operation is long running. As a rule of
+thumb; if an operation is less then 10 milliseconds it is not worth it to
+add a <code>Context</code> to the operation.</p>
+<p>Examples of when adding a <code>Context</code> is worth it:</p>
+<ul>
+<li>Any operation which involve any kind of I/O (network, disk or otherwise).</li>
+<li>Any operation which support cancelation or timeouts already.</li>
+<li>Long looping operations which process input in batches.</li>
+</ul>
+<p>The common theme in the example operations above is the fact that they all
+could be or are long running. If you, both as a developer and user of your
+application, would like more control over these kind of operations the use
+of a <code>Context</code> is a good fit.</p>
+</div><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+<table><tr class='module-item'><td><a class="struct" href="struct.CancelSignal.html" title='io_context::CancelSignal struct'>CancelSignal</a></td><td class='docblock-short'><p>A cancelation signal, see <a href="struct.Context.html#method.add_cancel_signal"><code>Context.add_cancel_signal</code></a>. See the crate
+documentation for an example.</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.Context.html" title='io_context::Context struct'>Context</a></td><td class='docblock-short'><p>A context that carries a deadline, cancelation signals and request scoped
+values across API boundaries and between processes.</p>
+</td></tr></table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
+<table><tr class='module-item'><td><a class="enum" href="enum.DoneReason.html" title='io_context::DoneReason enum'>DoneReason</a></td><td class='docblock-short'><p>The reason why a context was stopped, see <a href="struct.Context.html#method.done"><code>Context.done</code></a>. This &quot;error&quot; can
+be turned into an <a href="https://doc.rust-lang.org/nightly/std/io/struct.Error.html"><code>io::Error</code></a> by using the <a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html"><code>Into</code></a> trait
+(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html"><code>From</code></a><code>&lt;DoneReason&gt;</code> is implemented for <a href="https://doc.rust-lang.org/nightly/std/io/struct.Error.html"><code>io::Error</code></a>).</p>
+</td></tr></table></section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../";window.currentCrate = "io_context";</script><script src="../main.js"></script><script defer src="../search-index.js"></script></body></html>

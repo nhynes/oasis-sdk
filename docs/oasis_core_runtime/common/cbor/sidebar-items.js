@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Value","The `Value` enum, a loosely typed way of representing any valid CBOR value."]],"fn":[["from_slice","Deserializes a slice to a value."],["from_value","Convert a `serde_cbor::Value` into a type `T`"],["to_value","Convert a value to a `Value`."],["to_vec","Serializes a value to a vector."],["to_writer","Serializes a value to a writer."]]});

@@ -1,0 +1,9 @@
+(function() {var implementors = {};
+implementors["curve25519_dalek"] = [{"text":"impl Zeroize for Scalar","synthetic":false,"types":[]},{"text":"impl Zeroize for MontgomeryPoint","synthetic":false,"types":[]}];
+implementors["deoxysii"] = [{"text":"impl Zeroize for DeoxysII","synthetic":false,"types":[]}];
+implementors["ed25519_dalek"] = [{"text":"impl Zeroize for SecretKey","synthetic":false,"types":[]},{"text":"impl Zeroize for ExpandedSecretKey","synthetic":false,"types":[]}];
+implementors["elliptic_curve"] = [{"text":"impl&lt;C&gt; Zeroize for EncodedPoint&lt;C&gt; <span class=\"where fmt-newline\">where<br>&nbsp;&nbsp;&nbsp;&nbsp;C: Curve,<br>&nbsp;&nbsp;&nbsp;&nbsp;UntaggedPointSize&lt;C&gt;: Add&lt;U1&gt; + ArrayLength&lt;u8&gt;,<br>&nbsp;&nbsp;&nbsp;&nbsp;UncompressedPointSize&lt;C&gt;: ArrayLength&lt;u8&gt;,&nbsp;</span>","synthetic":false,"types":[]},{"text":"impl&lt;C&gt; Zeroize for NonZeroScalar&lt;C&gt; <span class=\"where fmt-newline\">where<br>&nbsp;&nbsp;&nbsp;&nbsp;C: Curve + ProjectiveArithmetic,<br>&nbsp;&nbsp;&nbsp;&nbsp;FieldBytes&lt;C&gt;: From&lt;Scalar&lt;C&gt;&gt; + for&lt;'r&gt; From&lt;&amp;'r Scalar&lt;C&gt;&gt;,<br>&nbsp;&nbsp;&nbsp;&nbsp;Scalar&lt;C&gt;: PrimeField&lt;Repr = FieldBytes&lt;C&gt;&gt; + Zeroize,&nbsp;</span>","synthetic":false,"types":[]},{"text":"impl&lt;C:&nbsp;Curve&gt; Zeroize for SecretBytes&lt;C&gt;","synthetic":false,"types":[]}];
+implementors["k256"] = [{"text":"impl Zeroize for AffinePoint","synthetic":false,"types":[]},{"text":"impl Zeroize for Scalar","synthetic":false,"types":[]}];
+implementors["x25519_dalek"] = [{"text":"impl Zeroize for EphemeralSecret","synthetic":false,"types":[]},{"text":"impl Zeroize for StaticSecret","synthetic":false,"types":[]},{"text":"impl Zeroize for SharedSecret","synthetic":false,"types":[]}];
+implementors["zeroize"] = [];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

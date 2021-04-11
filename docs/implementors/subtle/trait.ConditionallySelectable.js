@@ -1,0 +1,6 @@
+(function() {var implementors = {};
+implementors["curve25519_dalek"] = [{"text":"impl ConditionallySelectable for Scalar","synthetic":false,"types":[]},{"text":"impl ConditionallySelectable for EdwardsPoint","synthetic":false,"types":[]},{"text":"impl ConditionallySelectable for RistrettoPoint","synthetic":false,"types":[]}];
+implementors["elliptic_curve"] = [{"text":"impl&lt;C&gt; ConditionallySelectable for NonZeroScalar&lt;C&gt; <span class=\"where fmt-newline\">where<br>&nbsp;&nbsp;&nbsp;&nbsp;C: Curve + ProjectiveArithmetic,<br>&nbsp;&nbsp;&nbsp;&nbsp;FieldBytes&lt;C&gt;: From&lt;Scalar&lt;C&gt;&gt; + for&lt;'r&gt; From&lt;&amp;'r Scalar&lt;C&gt;&gt;,<br>&nbsp;&nbsp;&nbsp;&nbsp;Scalar&lt;C&gt;: PrimeField&lt;Repr = FieldBytes&lt;C&gt;&gt;,&nbsp;</span>","synthetic":false,"types":[]}];
+implementors["k256"] = [{"text":"impl ConditionallySelectable for AffinePoint","synthetic":false,"types":[]},{"text":"impl ConditionallySelectable for ProjectivePoint","synthetic":false,"types":[]},{"text":"impl ConditionallySelectable for Scalar","synthetic":false,"types":[]}];
+implementors["subtle"] = [];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

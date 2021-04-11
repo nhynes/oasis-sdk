@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["PROTOCOL_VERSION",""]],"struct":[["Version","A protocol or runtime version."]]});
