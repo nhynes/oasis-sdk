@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Error","Errors emitted by the keyvalue module."],["Event","Events emitted by the keyvalue module."]],"mod":[["types",""]],"struct":[["Genesis","Genesis state for the keyvalue module."],["Module","Simple keyvalue runtime module."],["Parameters","Parameters for the keyvalue module (none so far)."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["MODULE_NAME","Unique module name."]],"enum":[["Error","Errors emitted by the core module."]],"mod":[["state","State schema constants."],["types",""]]});

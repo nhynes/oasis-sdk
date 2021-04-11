@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Error","Context-related errors."],["Mode","Transaction execution mode."]],"struct":[["DispatchContext","Dispatch context for the whole batch."],["TxContext","Per-transaction dispatch context."]]});
